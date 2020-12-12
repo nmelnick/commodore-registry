@@ -1,0 +1,11 @@
+.DS_Store
+.vscode
+.metals
+*.swp
+*.log
+*.gz
+node_modules
+site.retry
+dist
+config.json
+state.json
