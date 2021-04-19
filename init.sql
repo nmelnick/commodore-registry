@@ -13,7 +13,8 @@ INSERT INTO machine
 VALUES
   ('CBM-II', NOW(), NOW()),
   ('64', NOW(), NOW()),
-  ('128', NOW(), NOW());
+  ('128', NOW(), NOW()),
+  ('Amiga 4000', NOW(), NOW());
 
 -- Corresponds to the model sticker (B128)
 CREATE TABLE model (
@@ -40,7 +41,13 @@ VALUES
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), '710', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), '720', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = '64'), '64', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = '128'), '128', NOW(), NOW());
+  ((SELECT machine_id FROM machine WHERE name = '64'), '64C', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '128'), '128', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '128'), '128D', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000/040 Desktop', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000/030 Desktop', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000T/040 Tower', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000T/060 Tower', NOW(), NOW());
 
 CREATE TABLE owner (
   owner_id serial primary key,
@@ -88,4 +95,5 @@ INSERT INTO attribute (name) VALUES
  ('board_revision'),
  ('board_assembly'),
  ('badge'),
- ('fkey');
+ ('fkey'),
+ ('made_in');
