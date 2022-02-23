@@ -1,0 +1,19 @@
+{
+   "type": "postgres",
+   "port": 5432,
+   "synchronize": false,
+   "logging": false,
+   "entities": [
+      "dist/entities/*.js"
+   ],
+   "migrations": [
+      "dist/migration/**/*.js"
+   ],
+   "subscribers": [
+      "dist/subscriber/**/*.js"
+   ],
+   "cli": {
+      "migrationsDir": "src/migration",
+      "subscribersDir": "src/subscriber"
+   }
+}

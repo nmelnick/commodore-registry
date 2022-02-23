@@ -1,0 +1,16 @@
+/owners
+GET /owners
+GET /owners/:id
+PUT /owners
+POST /owners/:id
+
+/devices
+GET /devices
+GET /devices/:id
+PUT /devices
+POST /devices/:id
+
+/machines
+GET /machines
+GET /machines/:model
+

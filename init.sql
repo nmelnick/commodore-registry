@@ -123,6 +123,12 @@ CREATE TABLE attribute (
 
 CREATE INDEX attribute_name ON attribute (name);
 
+CREATE TABLE model_attribute (
+  model_id integer,
+  attribute_id integer,
+  PRIMARY KEY (model_id, attribute_id)
+);
+
 CREATE TABLE device_attribute (
   device_id integer,
   attribute_id integer,
