@@ -1,9 +1,11 @@
 'use strict';
 
-const Pool = require("pg").Pool;
-const fs = require("fs");
-const parse = require("node-html-parser").parse;
-const config = require("../dist/src/Config").config;
+import fetch from "node-fetch";
+import * as pg from "pg";
+import { config } from "../dist/src/Config.js";
+import * as cheerio from "cheerio";
+
+const { Pool } = pg.default;
 
 const pool = new Pool({
   host: config.pg.host,
@@ -14,26 +16,30 @@ const pool = new Pool({
 
 const models = {};
 
-const dom = parse(fs.readFileSync("64registry.html"));
-const table = dom.querySelector("tbody");
-let lastDescriptor = null;
-const insertable = [];
-table.childNodes.forEach((tr) => {
-  const row = tr.childNodes.map((td) => getText(td));
-  if (row.length == 1) {
-    lastDescriptor.description = row[0];
-  } else {
-    if (row[0] == "Badge") {
-      return;
+go();
+
+async function go() {
+  const content = await fetch('https://c64preservation.com/?pg=registry').then((r) => r.text());
+  const $ = cheerio.load(content);
+  let lastDescriptor = null;
+  const insertable = [];
+  $("tr").each((i, tr) => {
+    const row = $(tr).children().map((i, td) => $(td).text())
+    if (row.length == 1) {
+      lastDescriptor.description = row[0];
+    } else {
+      if (row[0] == "Badge") {
+        return;
+      }
+      if (lastDescriptor) {
+        insertable.push(lastDescriptor);
+      }
+      lastDescriptor = rowToDescriptor(row);
     }
-    if (lastDescriptor) {
-      insertable.push(lastDescriptor);
-    }
-    lastDescriptor = rowToDescriptor(row);
-  }
-});
-insertable.push(lastDescriptor);
-syncInsertable(insertable);
+  });
+  insertable.push(lastDescriptor);
+  syncInsertable(insertable);
+}
 
 async function syncInsertable(insertable) {
   for (const row of insertable) {
