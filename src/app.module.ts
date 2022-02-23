@@ -13,6 +13,10 @@ import { Owner } from './entities/Owner';
 import { ModelAttribute } from './entities/ModelAttribute';
 import { MachinesController } from './machines/machines.controller';
 import { MachinesService } from './machines/machines.service';
+import { DevicesController } from './devices/devices.controller';
+import { OwnersController } from './owners/owners.controller';
+import { OwnersService } from './owners/owners.service';
+import { DevicesService } from './devices/devices.service';
 
 @Module({
   imports: [
@@ -24,7 +28,7 @@ import { MachinesService } from './machines/machines.service';
     }),
     TypeOrmModule.forFeature([Attribute, Device, DeviceAttribute, Machine, Model, ModelAttribute, Owner])
   ],
-  controllers: [AppController, UpController, MachinesController],
-  providers: [AppService, MachinesService],
+  controllers: [AppController, UpController, MachinesController, DevicesController, OwnersController],
+  providers: [AppService, MachinesService, OwnersService, DevicesService],
 })
 export class AppModule {}

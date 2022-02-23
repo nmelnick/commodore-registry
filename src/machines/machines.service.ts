@@ -26,6 +26,7 @@ export class MachinesService {
   }
   
   async getAllModelsForMachine(machineId: number): Promise<Model[]> {
-    return (await this.modelRepository.find({ machineId: machineId })).map((m) => ({ id: m.modelId, name: m.name }));
+    const machine = await this.machineRepository.findOne({ machineId: machineId }).then((m) => ({ id: m.machineId, name: m.name }));
+    return (await this.modelRepository.find({ machineId: machineId })).map((m) => ({ id: m.modelId, name: m.name, machine: machine }));
   }
 }
