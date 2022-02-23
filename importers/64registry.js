@@ -2,15 +2,17 @@
 
 const Pool = require("pg").Pool;
 const fs = require("fs");
-const readline = require('readline');
 const parse = require("node-html-parser").parse;
+const config = require("../dist/src/Config").config;
 
 const pool = new Pool({
-  host: "localhost",
-  user: "postgres",
-  password: "postgres",
-  database: "commodoreregistry"
+  host: config.pg.host,
+  user: config.pg.username,
+  password: config.pg.password,
+  database: config.pg.database
 });
+
+const models = {};
 
 const dom = parse(fs.readFileSync("64registry.html"));
 const table = dom.querySelector("tbody");
@@ -36,7 +38,7 @@ syncInsertable(insertable);
 async function syncInsertable(insertable) {
   for (const row of insertable) {
     if (row) {
-      const modelId = await model("64");
+      const modelId = await model(row.attributes?.badge && row.attributes.badge.startsWith("c64c") ? "64C" : "64");
       const ownerId = await owner(row.owner);
       const deviceId = await device(modelId, ownerId, row.serial, row.description);
       for (const attribute of Object.keys(row.attributes)) {
@@ -81,8 +83,12 @@ async function deviceAttribute(deviceId, attribute, value) {
 }
 
 async function model(modelName) {
-  return pool.query("SELECT model_id FROM model WHERE name = $1", [modelName])
-             .then((res) => res.rows[0].model_id);
+  if (!models[modelName]) {
+    const result = await pool.query("SELECT model_id FROM model WHERE name = $1", [modelName])
+      .then((res) => res.rows[0].model_id);
+    models[modelName] = result;
+  }
+  return models[modelName];
 }
 
 async function owner(o) {
