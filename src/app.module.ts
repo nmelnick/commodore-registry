@@ -11,6 +11,8 @@ import { Machine } from './entities/Machine';
 import { Model } from './entities/Model';
 import { Owner } from './entities/Owner';
 import { ModelAttribute } from './entities/ModelAttribute';
+import { MachinesController } from './machines/machines.controller';
+import { MachinesService } from './machines/machines.service';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { ModelAttribute } from './entities/ModelAttribute';
     }),
     TypeOrmModule.forFeature([Attribute, Device, DeviceAttribute, Machine, Model, ModelAttribute, Owner])
   ],
-  controllers: [AppController, UpController],
-  providers: [AppService],
+  controllers: [AppController, UpController, MachinesController],
+  providers: [AppService, MachinesService],
 })
 export class AppModule {}
