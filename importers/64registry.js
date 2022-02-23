@@ -61,7 +61,7 @@ async function device(modelId, ownerId, serial, description) {
     return res.rows[0].device_id;
   }
   await pool.query(
-    "INSERT INTO device (model_id, owner_id, prefix, serial_number, description, date_created, date_modified) VALUES ($1, $2, $3, $4, $5, NOW(), NOW())",
+    "INSERT INTO device (model_id, owner_id, prefix, serial_number, description, source, date_created, date_modified) VALUES ($1, $2, $3, $4, $5, '64registry', NOW(), NOW())",
     [modelId, ownerId, prefix, dbSerial, description]
   );
   return device(modelId, ownerId, serial, description);
