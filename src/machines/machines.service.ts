@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Attribute as AttributeEntity } from '../entities/Attribute';
 import { Machine as MachineEntity } from '../entities/Machine';
+import { MachineAttribute as MachineAttributeEntity } from '../entities/MachineAttribute';
 import { Model as ModelEntity } from '../entities/Model';
 import { Logger } from 'tslog';
 import { Repository } from 'typeorm';
@@ -18,6 +20,12 @@ export class MachinesService {
     
     @InjectRepository(ModelEntity)
     private modelRepository: Repository<ModelEntity>,
+    
+    @InjectRepository(MachineAttributeEntity)
+    private machineAttributeRepository: Repository<MachineAttributeEntity>,
+    
+    @InjectRepository(AttributeEntity)
+    private attributeRepository: Repository<AttributeEntity>,
   ) {
   }
 

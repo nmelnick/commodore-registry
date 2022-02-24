@@ -10,7 +10,7 @@ import { DeviceAttribute } from './entities/DeviceAttribute';
 import { Machine } from './entities/Machine';
 import { Model } from './entities/Model';
 import { Owner } from './entities/Owner';
-import { ModelAttribute } from './entities/ModelAttribute';
+import { MachineAttribute } from './entities/MachineAttribute';
 import { MachinesController } from './machines/machines.controller';
 import { MachinesService } from './machines/machines.service';
 import { DevicesController } from './devices/devices.controller';
@@ -26,7 +26,7 @@ import { DevicesService } from './devices/devices.service';
           autoLoadEntities: true,
         })
     }),
-    TypeOrmModule.forFeature([Attribute, Device, DeviceAttribute, Machine, Model, ModelAttribute, Owner])
+    TypeOrmModule.forFeature([Attribute, Device, DeviceAttribute, Machine, Model, MachineAttribute, Owner])
   ],
   controllers: [AppController, UpController, MachinesController, DevicesController, OwnersController],
   providers: [AppService, MachinesService, OwnersService, DevicesService],

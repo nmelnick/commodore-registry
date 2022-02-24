@@ -60,15 +60,16 @@ VALUES
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), '710', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), '720', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = '64'), '64', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = '64'), '64C', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '64'), 'C64', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '64'), 'C64C', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = '64'), 'Educator 64', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'SX-64'), 'SX-64', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = '64GS'), '64GS', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = '128'), '128', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = '128'), '128D', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = '128'), '128DCR', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = '16'), '16', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = '16'), '116', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '128'), 'C128', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '128'), 'C128D', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '128'), 'C128DCR', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '16'), 'C16', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = '16'), 'C116', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'Plus/4'), 'Plus/4', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 500'), 'A500', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 500'), 'A500+', NOW(), NOW()),
@@ -118,15 +119,16 @@ CREATE INDEX device_owner_id ON device (owner_id);
 
 CREATE TABLE attribute (
   attribute_id serial primary key,
-  name varchar(64)
+  name varchar(64),
+  display_name varchar(64)
 );
 
 CREATE INDEX attribute_name ON attribute (name);
 
-CREATE TABLE model_attribute (
-  model_id integer,
+CREATE TABLE machine_attribute (
+  machine_id integer,
   attribute_id integer,
-  PRIMARY KEY (model_id, attribute_id)
+  PRIMARY KEY (machine_id, attribute_id)
 );
 
 CREATE TABLE device_attribute (
@@ -137,11 +139,60 @@ CREATE TABLE device_attribute (
   PRIMARY KEY (device_id, attribute_id)
 );
 
-INSERT INTO attribute (name) VALUES
- ('board_serial'),
- ('board_datecode'),
- ('board_revision'),
- ('board_assembly'),
- ('badge'),
- ('fkey'),
- ('made_in');
+INSERT INTO attribute (name, display_name) VALUES
+ ('board_serial', 'Board Serial Number'),
+ ('board_datecode', 'Board Date Code'),
+ ('board_revision', 'Board Revision'),
+ ('board_assembly', 'Board Assembly'),
+ ('badge', 'Badge Type'),
+ ('fkey', 'Function Key Type'),
+ ('made_in', 'Made In Country'),
+ ('manufacture_date', 'Manufacture Date'),
+ ('id', 'ID');
+
+INSERT INTO machine_attribute (machine_id, attribute_id) VALUES
+  ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'board_assembly')),
+  ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'badge')),
+  ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'fkey')),
+  
+  ((SELECT machine_id FROM machine WHERE name = '128'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = '128'), (SELECT attribute_id FROM attribute WHERE name = 'manufacture_date')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 500'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 500'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 600'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 600'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 600'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'id')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 2000'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 2000'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 2500'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 2500'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'id')),
+
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), (SELECT attribute_id FROM attribute WHERE name = 'board_assembly')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'manufacture_date'))
+  ;
