@@ -1,6 +1,7 @@
 'use strict';
 
 import fetch from "node-fetch";
+import * as fs from "fs";
 import * as pg from "pg";
 import { config } from "../dist/src/Config.js";
 import * as cheerio from "cheerio";
@@ -20,24 +21,22 @@ go();
 
 async function go() {
   console.log('Retrieving...');
-  const content = await fetch('https://c64preservation.com/?pg=registry').then((r) => r.text());
+  const content = await fetch('https://cbmvic.net/registry').then((r) => r.text());
+  // const content = fs.readFileSync("cbmvic.html");
   const $ = cheerio.load(content);
   let lastDescriptor = null;
   const insertable = [];
   console.log('Parsing...');
-  $("tr").each((i, tr) => {
-    const row = $(tr).children().map((i, td) => $(td).text())
-    if (row.length == 1) {
-      lastDescriptor.description = row[0];
-    } else {
-      if (row[0] == "Badge") {
-        return;
-      }
-      if (lastDescriptor) {
-        insertable.push(lastDescriptor);
-      }
-      lastDescriptor = rowToDescriptor(row);
+  $("tbody > tr").each((i, tr) => {
+    const row = [];
+    $(tr).children().each((i, td) => row.push(getText($(td))));
+    if (row[1] == "Serial number") {
+      return;
     }
+    if (lastDescriptor) {
+      insertable.push(lastDescriptor);
+    }
+    lastDescriptor = rowToDescriptor(row);
   });
   insertable.push(lastDescriptor);
   console.log('Storing...');
@@ -47,7 +46,7 @@ async function go() {
 async function syncInsertable(insertable) {
   for (const row of insertable) {
     if (row) {
-      const modelId = await model(row.attributes?.badge && row.attributes.badge.startsWith("c64c") ? "64C" : "64");
+      const modelId = await model(row.attributes?.badge && row.attributes.badge.startsWith("1001") ? "VIC-1001" : "VIC-20");
       const ownerId = await owner(row.owner);
       const deviceId = await device(modelId, ownerId, row.serial, row.description);
       for (const attribute of Object.keys(row.attributes)) {
@@ -72,7 +71,7 @@ async function device(modelId, ownerId, serial, description) {
     return res.rows[0].device_id;
   }
   await pool.query(
-    "INSERT INTO device (model_id, owner_id, prefix, serial_number, description, source, date_created, date_modified) VALUES ($1, $2, $3, $4, $5, '64registry', NOW(), NOW())",
+    "INSERT INTO device (model_id, owner_id, prefix, serial_number, description, source, date_created, date_modified) VALUES ($1, $2, $3, $4, $5, 'cbmvic', NOW(), NOW())",
     [modelId, ownerId, prefix, dbSerial, description]
   );
   return device(modelId, ownerId, serial, description);
@@ -109,35 +108,29 @@ async function owner(o) {
   return owner(o);
 }
 
-function getImageSource(node) {
-  if (node.rawTagName == "center") {
-    return getImageSource(node.childNodes[0]);
-  }
-  return node.rawAttrs;
-}
-
 function getText(td) {
-  const tags = td.childNodes.filter((n) => n.nodeType == 1);
+  const tags = td.children('a').children('img');
   if (tags.length > 0) {
-    return getImageSource(tags[0]);
+    return tags[0].attribs['src'];
   }
-  return td.innerText;
+  return td.text().trim();
 }
 
 function rowToDescriptor(row) {
   return {
-    serial: row[2],
+    serial: row[1],
     description: null,
     owner: {
-      name: row[6],
-      location: row[7]
+      name: row[10],
+      location: row[9]
     },
     attributes: {
-      board_assembly: row[3],
-      board_revision: row[4],
-      board_serial: row[5],
-      badge: row[0] ? row[0].substring(row[0].indexOf("files/") + 6, row[0].indexOf("_badge")) : null,
-      fkey: row[1] ? row[1].substring(row[1].indexOf("files/") + 6, row[1].indexOf("_f1.png")) : null
+      board_assembly: row[5],
+      badge: row[3] ? row[3].substring(row[3].indexOf("label/") + 6, row[3].indexOf(".png")) : null,
+      date_code: row[8],
+      video_format: row[7] ? row[7].substring(0, row[7].indexOf(" ")) : null,
+      made_in: row[2],
+      keyboard: row[6]
     }
   };
 }

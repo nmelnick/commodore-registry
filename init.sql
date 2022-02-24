@@ -48,6 +48,7 @@ INSERT INTO model
   (machine_id, name, date_created, date_modified)
 VALUES
   ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), 'VIC-20', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), 'VIC-1001', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'MAX Machine'), 'MAX Machine', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), 'B128', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), 'P500', NOW(), NOW()),
@@ -148,51 +149,73 @@ INSERT INTO attribute (name, display_name) VALUES
  ('fkey', 'Function Key Type'),
  ('made_in', 'Made In Country'),
  ('manufacture_date', 'Manufacture Date'),
- ('id', 'ID');
+ ('id', 'ID'),
+ ('date_code', 'Date Code'),
+ ('video_format', 'Video Format'),
+ ('keyboard', 'Keyboard');
 
 INSERT INTO machine_attribute (machine_id, attribute_id) VALUES
+  ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), (SELECT attribute_id FROM attribute WHERE name = 'board_assembly')),
+  ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), (SELECT attribute_id FROM attribute WHERE name = 'badge')),
+  ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), (SELECT attribute_id FROM attribute WHERE name = 'keyboard')),
+  ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), (SELECT attribute_id FROM attribute WHERE name = 'date_code')),
+  ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
+  ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+
   ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'board_assembly')),
   ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
   ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'badge')),
   ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'fkey')),
+  ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
+  ((SELECT machine_id FROM machine WHERE name = '64'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
   
   ((SELECT machine_id FROM machine WHERE name = '128'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
   ((SELECT machine_id FROM machine WHERE name = '128'), (SELECT attribute_id FROM attribute WHERE name = 'manufacture_date')),
+  ((SELECT machine_id FROM machine WHERE name = '128'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 500'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 500'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 500'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 600'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 600'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 600'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 600'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'id')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 1200'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 2000'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 2000'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 2000'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 2500'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 2500'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 2500'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'id')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
 
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), (SELECT attribute_id FROM attribute WHERE name = 'board_assembly')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), (SELECT attribute_id FROM attribute WHERE name = 'video_format')),
   
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'board_revision')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'board_serial')),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'made_in')),
-  ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'manufacture_date'))
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'manufacture_date')),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), (SELECT attribute_id FROM attribute WHERE name = 'video_format'))
   ;
