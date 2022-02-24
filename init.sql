@@ -50,7 +50,7 @@ VALUES
   ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), 'VIC-20', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'VIC-20'), 'VIC-1001', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'MAX Machine'), 'MAX Machine', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), 'B128', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), 'B128-80', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), 'P500', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), 'B500', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'CBM-II'), 'B700', NOW(), NOW()),
@@ -85,10 +85,10 @@ VALUES
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), 'A3000', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), 'A3000T', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga 3000'), 'A3000UX', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000/040 Desktop', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000/030 Desktop', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000T/040 Tower', NOW(), NOW()),
-  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000T/060 Tower', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000/040', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000/030', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000T/040', NOW(), NOW()),
+  ((SELECT machine_id FROM machine WHERE name = 'Amiga 4000'), 'A4000T/060', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CDTV'), 'CDTV', NOW(), NOW()),
   ((SELECT machine_id FROM machine WHERE name = 'Amiga CD32'), 'CD32', NOW(), NOW());
 
